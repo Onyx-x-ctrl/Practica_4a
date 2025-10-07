@@ -29,6 +29,7 @@ calc_prog_1(struct svc_req *rqstp, register SVCXPRT *transp)
 	xdrproc_t _xdr_argument, _xdr_result;
 	char *(*local)(char *, struct svc_req *);
 
+	/* Selecciona la función a ejecutar según el procedimiento solicitado por el cliente */
 	switch (rqstp->rq_proc) {
 	case NULLPROC:
 		(void) svc_sendreply (transp, (xdrproc_t) xdr_void, (char *)NULL);
@@ -67,15 +68,19 @@ calc_prog_1(struct svc_req *rqstp, register SVCXPRT *transp)
 		svcerr_decode (transp);
 		return;
 	}
+	/* Llama a la función local correspondiente */
 	result = (*local)((char *)&argument, rqstp);
+
+	/* Envía la respuesta al cliente */
 	if (result != NULL && !svc_sendreply(transp, (xdrproc_t) _xdr_result, result)) {
-		svcerr_systemerr (transp);
+		svcerr_systemerr (transp); // Error del sistema al enviar la respuesta
 	}
+
+	/* Libera los argumentos utilizados */
 	if (!svc_freeargs (transp, (xdrproc_t) _xdr_argument, (caddr_t) &argument)) {
 		fprintf (stderr, "%s", "unable to free arguments");
 		exit (1);
 	}
-	return;
 }
 
 int
