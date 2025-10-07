@@ -10,9 +10,14 @@ xdr_dupla_int (XDR *xdrs, dupla_int *objp)
 {
 	register int32_t *buf;
 
-	 if (!xdr_double (xdrs, &objp->a))
-		 return FALSE;
-	 if (!xdr_double (xdrs, &objp->b))
-		 return FALSE;
+	 /* Codifica o decodifica el primer valor (a) */
+	if (!xdr_double (xdrs, &objp->a))
+		return FALSE;
+
+	/* Codifica o decodifica el segundo valor (b) */
+	if (!xdr_double (xdrs, &objp->b))
+		return FALSE;
+
+	/* Si ambas conversiones fueron exitosas */
 	return TRUE;
 }
