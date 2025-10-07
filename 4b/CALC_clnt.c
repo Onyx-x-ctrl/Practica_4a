@@ -10,7 +10,7 @@
 static struct timeval TIMEOUT = { 25, 0 };
 
 double *
-suma_1(dupla_int *argp, CLIENT *clnt)
+suma_1(dupla_int *argp, CLIENT *clnt) //<- Esta función envuelve internamente la llamada de bajo nivel clnt_call()
 {
 	static double clnt_res;
 
