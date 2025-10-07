@@ -8,7 +8,8 @@ void calc_prog_1(char *host, int opcion, double a, double b)
     double *result_1;
     dupla_int operandos_1_arg;  
 #ifndef DEBUG
-    clnt = clnt_create(host, CALC_PROG, CALC_VERS, "udp");
+    clnt = clnt_create(host, CALC_PROG, CALC_VERS, "udp"); // <- Crea el manejador de cliente RPC, estableciendo la conexión con el servidor definido por 'host'.
+// Usa el programa CALC_PROG y la versión CALC_VERS, comunicándose mediante el protocolo UDP.
     if (clnt == NULL) {
         clnt_pcreateerror(host);
         exit(1);
@@ -46,11 +47,11 @@ void calc_prog_1(char *host, int opcion, double a, double b)
     }
 
 #ifndef DEBUG
-    clnt_destroy(clnt);
+    clnt_destroy(clnt);   // <- Cierra la conexión
 #endif
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char *argv[]) // <- Contiene el código del cliente 
 {
     if (argc != 5) {
         printf("Uso: %s <host> <opcion> <a> <b>\n", argv[0]);
@@ -61,7 +62,7 @@ int main(int argc, char *argv[])
     char *host = argv[1];
     int opcion = atoi(argv[2]);
     double a = atof(argv[3]);
-    double b = atof(argv[4]);
+    double b = atof(argv[4]); // <- personalizado para recibir la dirección IP del servidor, la operación y los valores como argumentos.
 
     calc_prog_1(host, opcion, a, b);
 
